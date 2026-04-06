@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,19 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>يصديقي - ذكرياتنا</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Zaid:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #d63384;
-            --soft-pink: #fff5f7;
-            --card-bg: #ffffff;
+            --primary: #ff85a2;
+            --primary-dark: #f472b6;
+            --soft-pink: #fff1f2;
+            --dark: #1f2937;
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
             background-color: var(--soft-pink);
-            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
-            color: #333;
+            background-image: radial-gradient(#ff85a222 1px, transparent 0);
+            background-size: 30px 30px;
+            color: var(--dark);
             margin: 0;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
@@ -28,12 +30,12 @@
         #auth-screen {
             position: fixed;
             inset: 0;
-            background: #fff0f3;
+            background: white;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            transition: all 0.8s ease;
+            transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.6s ease;
         }
 
         .auth-card {
@@ -41,148 +43,134 @@
             padding: 2.5rem;
             border-radius: 2rem;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
-            width: 85%;
-            max-width: 350px;
+            box-shadow: 0 25px 50px -12px rgba(244, 114, 182, 0.25);
+            max-width: 380px;
+            width: 90%;
+            border: 1px solid #fee2e2;
         }
 
         .pass-input {
             width: 100%;
-            border: 1px solid #ffccd5;
-            border-radius: 0.8rem;
-            padding: 0.8rem;
+            border: 2px solid #fecaca;
+            border-radius: 1rem;
+            padding: 1rem;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin: 1.5rem 0;
-            color: var(--primary);
-            background: #fffafa;
+            letter-spacing: 0.5rem;
+            color: var(--primary-dark);
+            font-weight: 800;
+            transition: all 0.3s;
         }
 
-        /* التصميم المستوحى من الصورة */
+        .pass-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.1);
+        }
+
+        /* المحتوى الرئيسي */
         .main-wrapper {
             display: none;
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        .story-card {
-            background: white;
-            border-radius: 2.5rem;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            margin-top: 50px;
             position: relative;
-            min-height: 400px;
+            padding: 20px 15px 140px 15px;
         }
 
-        .story-title {
-            color: #d63384;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            font-family: 'Tajawal', sans-serif;
+        .header-msg {
+            padding: 40px 10px;
+            text-align: center;
         }
 
-        .story-content {
-            font-size: 1.3rem;
+        .typewriter-box {
+            font-family: 'Amiri', serif;
+            font-size: 1.4rem;
             line-height: 1.8;
-            color: #777;
-            font-family: 'Tajawal', sans-serif;
-            font-weight: 400;
+            color: #9d174d;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 2.5rem;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 10px 25px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid white;
         }
 
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            background-color: #d63384;
-            margin-right: 5px;
-            animation: blink 0.7s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        /* ميديا ستيك */
+        /* بطاقات الميديا */
         .item-container {
-            margin-top: 30px;
+            position: relative;
             border-radius: 2rem;
             overflow: hidden;
             background: white;
-            padding: 8px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            padding: 10px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: 0.8s all ease;
+            transform: translateY(40px) scale(0.95);
+            transition: all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1);
         }
 
         .item-container.revealed {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .item-container img, .item-container video {
             width: 100%;
             border-radius: 1.5rem;
+            display: block;
+            object-fit: cover;
         }
 
-        /* القلوب العائمة */
-        .heart-bg {
+        /* مشغل الموسيقى */
+        .music-pill {
             position: fixed;
-            bottom: -20px;
-            width: 100%;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 100px;
             display: flex;
-            justify-content: space-around;
-            pointer-events: none;
-            z-index: -1;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 15px 35px rgba(219, 39, 119, 0.2);
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 90%;
+            max-width: 320px;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #f472b6, #db2777);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
         }
 
         .floating-heart {
             position: fixed;
             pointer-events: none;
             z-index: 50;
-            animation: floatUp 5s linear forwards;
+            animation: floatUp 4s ease-in forwards;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
-            10% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg) scale(1.5); opacity: 0; }
         }
 
-        /* مشغل الموسيقى مثل الصورة */
-        .music-player {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 20px;
-            border-radius: 100px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 25px rgba(214, 51, 132, 0.15);
-            backdrop-filter: blur(5px);
-            z-index: 200;
-        }
-
-        .play-btn {
-            background: #ffccd5;
-            color: #d63384;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+        .unlock-anim {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
         }
     </style>
 </head>
@@ -192,82 +180,122 @@
         <source src="https://res.cloudinary.com/dyiekoiz4/video/upload/v1775508863/54e0639b4759c801684e01054feb65fc_v84pmf.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- شاشة الدخول المحدثة -->
     <div id="auth-screen">
         <div class="auth-card">
-            <h1 class="text-2xl font-bold text-pink-600 mb-2">جاهز يصديقي 😉</h1>
-            <p class="text-gray-400 text-sm">اكتب كلمة السر للدخول</p>
+            <div class="inline-block p-4 bg-pink-50 rounded-full mb-6">
+                <span class="text-5xl animate-pulse inline-block">🔒</span>
+            </div>
+            <!-- النص المحدث في صفحة التسجيل -->
+            <h1 class="text-2xl font-bold text-gray-800">جاهز يصديقي 😉</h1>
+            <p class="text-gray-500 text-sm mt-2">السنة اللي بدأت فيها حكايتنا؟</p>
             <input type="tel" id="pass-input" maxlength="4" placeholder="••••" class="pass-input">
-            <button onclick="unlock()" class="w-full bg-pink-500 text-white font-bold py-3 rounded-lg shadow-md active:scale-95 transition-all">
-                دخول ✨
+            <button onclick="unlock()" class="w-full bg-gradient-to-r from-pink-400 to-pink-600 text-white font-bold py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all">
+                افتح صندوق الذكريات ✨
             </button>
+            <p id="error" class="text-red-500 mt-4 text-sm font-medium opacity-0 transition-opacity">الرقم غلط.. حاول تاني يا بطل!</p>
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي بتصميم الصورة -->
     <div id="main-content" class="main-wrapper">
-        <div class="story-card">
-            <h2 class="story-title">يصديقي</h2>
-            <div id="text-box" class="story-content"></div>
-            <span class="cursor"></span>
-        </div>
+        <header class="header-msg">
+            <div id="text-box" class="typewriter-box"></div>
+        </header>
 
         <div class="media-stack">
-            <!-- الفيديو المحدث -->
-            <div class="item-container">
-                <video id="vlog" controls playsinline>
-                    <source src="https://res.cloudinary.com/dyiekoiz4/video/upload/v1775510455/_fyp__%D9%81%D8%A7%D9%83%D8%B1%D9%87_%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82_%D8%A7%D9%88%D9%82%D8%A7%D8%AA_%D9%8A%D8%B6%D9%8A%D9%82__%D9%81%D9%8A%D9%84%D9%85_%D9%A6_%D8%A3%D9%8A%D8%A7%D9%85_MP4_bxzwcz.mp4" type="video/mp4">
-                </video>
-            </div>
-
-            <!-- الصور -->
             <div class="item-container">
                 <img src="https://i.postimg.cc/Nf0R9c23/75937e40aa434ba1fb7b6cf8393ebfce.jpg" alt="ذكرى 1">
             </div>
+
             <div class="item-container">
                 <img src="https://i.postimg.cc/jqczS5Cx/9be14993c73f717a89d193b536f7f927.jpg" alt="ذكرى 2">
             </div>
+
+            <!-- الفيديو الجديد المحدث -->
+            <div class="item-container">
+                <video id="vlog" controls playsinline>
+                    <source src="https://res.cloudinary.com/dyiekoiz4/video/upload/v1775510455/_fyp__%D9%81%D8%A7%D9%83%D8%B1%D9%87_%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82_%D8%A7%D9%88%D9%82%D8%A7%D8%AA_%D9%8A%D8%B6%D9%8A%D9%82__%D9%81%D9%8A%D9%84%D9%85_%D9%A6_%D8%A3%D9%8A%D8%A7%D9%85_MP4_bxzwcz.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                </video>
+            </div>
+
             <div class="item-container">
                 <img src="https://i.postimg.cc/7P9gZ6bk/9d828d2605dacc06b20b82495a587cc6.jpg" alt="ذكرى 3">
             </div>
-        </div>
 
-        <div class="text-center py-20 opacity-50">
-            ❤️ دمت لي شيئاً جميلاً لا ينتهي
+            <div class="item-container">
+                <img src="https://i.postimg.cc/NGD1jMLQ/c9b4751583f2676f57a74016a95d29ed.jpg" alt="ذكرى 4">
+            </div>
+
+            <div class="text-center py-16">
+                <div class="text-pink-600 font-bold text-2xl mb-4">دمت لي شيئاً لا ينتهي ❤️</div>
+                <div class="flex justify-center gap-4 text-2xl">
+                    <span class="animate-bounce" style="animation-delay: 0.1s">✨</span>
+                    <span class="animate-bounce" style="animation-delay: 0.2s">🌸</span>
+                    <span class="animate-bounce" style="animation-delay: 0.3s">✨</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- مشغل الموسيقى المحدث -->
-    <div id="music-pill" class="music-player opacity-0 pointer-events-none">
+    <div id="music-pill" class="music-pill opacity-0 pointer-events-none">
         <div class="play-btn" onclick="togglePlay()" id="play-trigger">
-            <svg id="play-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
         </div>
-        <div class="flex-1 text-right">
-            <p class="text-pink-600 font-bold text-sm">يصديقي ❤️</p>
-            <p class="text-gray-400 text-xs">أغنيتنا المفضلة</p>
+        <div class="flex-1 overflow-hidden text-right">
+            <p class="text-[10px] uppercase tracking-widest text-pink-500 font-bold">جاري التشغيل</p>
+            <p class="text-sm font-bold text-gray-700 truncate">ذكرى غالية 🎶</p>
+        </div>
+        <div class="flex items-end gap-1 h-4" id="visualizer">
+            <div class="w-1 bg-pink-400 rounded-full animate-bounce h-2"></div>
+            <div class="w-1 bg-pink-500 rounded-full animate-bounce h-4" style="animation-delay: 0.1s"></div>
+            <div class="w-1 bg-pink-300 rounded-full animate-bounce h-3" style="animation-delay: 0.2s"></div>
         </div>
     </div>
 
     <script>
         const story = "عارف.. البداية كانت صدفة في ٢٠٢٠، كنا لسه في أولى ثانوي.. وبعدين درس الإنجليزي اللي قربنا من بعض فيه، وبقينا أعز وأغلى صحاب. بحب فيك دماغك وطموحك اللي مش بيخلص وسعيك وهبلك وكل حاجة فيك. شكراً إنك موجود في حياتي يصديقي.";
         const audio = document.getElementById('audio-player');
+        
+        const playIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+        const pauseIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
 
         function unlock() {
             const input = document.getElementById('pass-input');
+            const error = document.getElementById('error');
+            
             if(input.value === '2020') {
-                document.getElementById('auth-screen').style.transform = 'translateY(-100%)';
+                const screen = document.getElementById('auth-screen');
+                screen.classList.add('unlock-anim');
+                
                 setTimeout(() => {
-                    document.getElementById('auth-screen').style.display = 'none';
+                    screen.style.display = 'none';
                     document.getElementById('main-content').style.display = 'block';
-                    document.getElementById('music-pill').classList.remove('opacity-0');
-                    audio.play();
+                    const pill = document.getElementById('music-pill');
+                    pill.classList.remove('opacity-0', 'pointer-events-none');
+                    
+                    audio.play().then(() => updateMusicUI(true)).catch(() => updateMusicUI(false));
+                    
                     typeWriter();
                     startScrollObserver();
-                    spawnHearts();
+                    createHearts();
                 }, 800);
+            } else {
+                error.style.opacity = '1';
+                setTimeout(() => error.style.opacity = '0', 2000);
             }
+        }
+
+        function togglePlay() {
+            if (audio.paused) { audio.play(); updateMusicUI(true); } 
+            else { audio.pause(); updateMusicUI(false); }
+        }
+
+        function updateMusicUI(isPlaying) {
+            document.getElementById('play-trigger').innerHTML = isPlaying ? pauseIcon : playIcon;
+            document.getElementById('visualizer').style.opacity = isPlaying ? '1' : '0.3';
         }
 
         function typeWriter() {
@@ -277,43 +305,37 @@
                 if(i < story.length) {
                     target.innerHTML += story.charAt(i);
                     i++;
-                    setTimeout(write, 50);
+                    setTimeout(write, 60);
                 }
             }
             write();
         }
 
-        function togglePlay() {
-            const svg = document.getElementById('play-svg');
-            if (audio.paused) {
-                audio.play();
-                svg.innerHTML = '<path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>';
-            } else {
-                audio.pause();
-                svg.innerHTML = '<path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>';
-            }
-        }
-
         function startScrollObserver() {
+            const items = document.querySelectorAll('.item-container');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if(entry.isIntersecting) entry.target.classList.add('revealed');
                 });
-            }, { threshold: 0.2 });
-            document.querySelectorAll('.item-container').forEach(i => observer.observe(i));
+            }, { threshold: 0.1 });
+            items.forEach(item => observer.observe(item));
         }
 
-        function spawnHearts() {
+        function createHearts() {
             setInterval(() => {
-                const h = document.createElement('div');
-                h.innerHTML = ['❤️', '💖', '🌸'][Math.floor(Math.random()*3)];
-                h.className = 'floating-heart';
-                h.style.left = Math.random() * 100 + 'vw';
-                h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                document.body.appendChild(h);
-                setTimeout(() => h.remove(), 5000);
-            }, 800);
+                const heart = document.createElement('div');
+                heart.innerHTML = ['❤️', '💖', '✨', '🌸'][Math.floor(Math.random()*4)];
+                heart.className = 'floating-heart';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }, 600);
         }
+
+        document.getElementById('pass-input').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') unlock();
+        });
     </script>
 </body>
 </html>
