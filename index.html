@@ -1,0 +1,321 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>يصديقي - ذكرياتنا</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Zaid:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d63384;
+            --soft-pink: #fff5f7;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--soft-pink);
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            color: #333;
+            margin: 0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* شاشة الدخول */
+        #auth-screen {
+            position: fixed;
+            inset: 0;
+            background: #fff0f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.8s ease;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
+            width: 85%;
+            max-width: 350px;
+        }
+
+        .pass-input {
+            width: 100%;
+            border: 1px solid #ffccd5;
+            border-radius: 0.8rem;
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 1.5rem 0;
+            color: var(--primary);
+            background: #fffafa;
+        }
+
+        /* التصميم المستوحى من الصورة */
+        .main-wrapper {
+            display: none;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 2.5rem;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-top: 50px;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .story-title {
+            color: #d63384;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .story-content {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #777;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 400;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: #d63384;
+            margin-right: 5px;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* ميديا ستيك */
+        .item-container {
+            margin-top: 30px;
+            border-radius: 2rem;
+            overflow: hidden;
+            background: white;
+            padding: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.8s all ease;
+        }
+
+        .item-container.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .item-container img, .item-container video {
+            width: 100%;
+            border-radius: 1.5rem;
+        }
+
+        /* القلوب العائمة */
+        .heart-bg {
+            position: fixed;
+            bottom: -20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 50;
+            animation: floatUp 5s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* مشغل الموسيقى مثل الصورة */
+        .music-player {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 25px rgba(214, 51, 132, 0.15);
+            backdrop-filter: blur(5px);
+            z-index: 200;
+        }
+
+        .play-btn {
+            background: #ffccd5;
+            color: #d63384;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="audio-player" loop>
+        <source src="https://res.cloudinary.com/dyiekoiz4/video/upload/v1775508863/54e0639b4759c801684e01054feb65fc_v84pmf.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- شاشة الدخول المحدثة -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h1 class="text-2xl font-bold text-pink-600 mb-2">جاهز يصديقي 😉</h1>
+            <p class="text-gray-400 text-sm">اكتب كلمة السر للدخول</p>
+            <input type="tel" id="pass-input" maxlength="4" placeholder="••••" class="pass-input">
+            <button onclick="unlock()" class="w-full bg-pink-500 text-white font-bold py-3 rounded-lg shadow-md active:scale-95 transition-all">
+                دخول ✨
+            </button>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي بتصميم الصورة -->
+    <div id="main-content" class="main-wrapper">
+        <div class="story-card">
+            <h2 class="story-title">يصديقي</h2>
+            <div id="text-box" class="story-content"></div>
+            <span class="cursor"></span>
+        </div>
+
+        <div class="media-stack">
+            <!-- الفيديو المحدث -->
+            <div class="item-container">
+                <video id="vlog" controls playsinline>
+                    <source src="https://res.cloudinary.com/dyiekoiz4/video/upload/v1775510455/_fyp__%D9%81%D8%A7%D9%83%D8%B1%D9%87_%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82_%D8%A7%D9%88%D9%82%D8%A7%D8%AA_%D9%8A%D8%B6%D9%8A%D9%82__%D9%81%D9%8A%D9%84%D9%85_%D9%A6_%D8%A3%D9%8A%D8%A7%D9%85_MP4_bxzwcz.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- الصور -->
+            <div class="item-container">
+                <img src="https://i.postimg.cc/Nf0R9c23/75937e40aa434ba1fb7b6cf8393ebfce.jpg" alt="ذكرى 1">
+            </div>
+            <div class="item-container">
+                <img src="https://i.postimg.cc/jqczS5Cx/9be14993c73f717a89d193b536f7f927.jpg" alt="ذكرى 2">
+            </div>
+            <div class="item-container">
+                <img src="https://i.postimg.cc/7P9gZ6bk/9d828d2605dacc06b20b82495a587cc6.jpg" alt="ذكرى 3">
+            </div>
+        </div>
+
+        <div class="text-center py-20 opacity-50">
+            ❤️ دمت لي شيئاً جميلاً لا ينتهي
+        </div>
+    </div>
+
+    <!-- مشغل الموسيقى المحدث -->
+    <div id="music-pill" class="music-player opacity-0 pointer-events-none">
+        <div class="play-btn" onclick="togglePlay()" id="play-trigger">
+            <svg id="play-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+            </svg>
+        </div>
+        <div class="flex-1 text-right">
+            <p class="text-pink-600 font-bold text-sm">يصديقي ❤️</p>
+            <p class="text-gray-400 text-xs">أغنيتنا المفضلة</p>
+        </div>
+    </div>
+
+    <script>
+        const story = "عارف.. البداية كانت صدفة في ٢٠٢٠، كنا لسه في أولى ثانوي.. وبعدين درس الإنجليزي اللي قربنا من بعض فيه، وبقينا أعز وأغلى صحاب. بحب فيك دماغك وطموحك اللي مش بيخلص وسعيك وهبلك وكل حاجة فيك. شكراً إنك موجود في حياتي يصديقي.";
+        const audio = document.getElementById('audio-player');
+
+        function unlock() {
+            const input = document.getElementById('pass-input');
+            if(input.value === '2020') {
+                document.getElementById('auth-screen').style.transform = 'translateY(-100%)';
+                setTimeout(() => {
+                    document.getElementById('auth-screen').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    document.getElementById('music-pill').classList.remove('opacity-0');
+                    audio.play();
+                    typeWriter();
+                    startScrollObserver();
+                    spawnHearts();
+                }, 800);
+            }
+        }
+
+        function typeWriter() {
+            const target = document.getElementById('text-box');
+            let i = 0;
+            function write() {
+                if(i < story.length) {
+                    target.innerHTML += story.charAt(i);
+                    i++;
+                    setTimeout(write, 50);
+                }
+            }
+            write();
+        }
+
+        function togglePlay() {
+            const svg = document.getElementById('play-svg');
+            if (audio.paused) {
+                audio.play();
+                svg.innerHTML = '<path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>';
+            } else {
+                audio.pause();
+                svg.innerHTML = '<path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>';
+            }
+        }
+
+        function startScrollObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) entry.target.classList.add('revealed');
+                });
+            }, { threshold: 0.2 });
+            document.querySelectorAll('.item-container').forEach(i => observer.observe(i));
+        }
+
+        function spawnHearts() {
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.innerHTML = ['❤️', '💖', '🌸'][Math.floor(Math.random()*3)];
+                h.className = 'floating-heart';
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 5000);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
+
+```
